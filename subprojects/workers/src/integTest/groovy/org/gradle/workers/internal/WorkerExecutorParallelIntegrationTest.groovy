@@ -44,7 +44,7 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
                     results += submitWorkItem("workItem2")
                     
                     if (${waitForResults}) {
-                        workerExecutor.await(results)
+                        workerExecutor.await()
                     }
                 }
             }
@@ -234,8 +234,7 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
         errorOutput.contains("Failure from task action")
     }
 
-    @Unroll
-    def "user can take responsibility for failing work items (using: #waitMethod)"() {
+    def "user can take responsibility for failing work items"() {
         given:
         buildFile << """
             import java.util.concurrent.ExecutionException
@@ -252,7 +251,7 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
                     }
 
                     try {
-                        ${waitMethod}
+                        workerExecutor.await()
                     } catch (ExecutionException e) {
                         logger.warn e.message
                     } catch (WorkerExecutionException e) {
@@ -269,9 +268,6 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
 
         and:
         output.contains("A failure occurred while executing work item 2")
-
-        where:
-        waitMethod << [ "result.get()", "workerExecutor.await([result])" ]
     }
 
     def getParallelRunnable() {
