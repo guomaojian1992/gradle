@@ -29,6 +29,7 @@ class JavaCleanTestPerformanceTest extends AbstractCrossVersionPerformanceTest {
         runner.warmUpRuns = warmUpRuns
         runner.runs = runs
         runner.targetVersions = ["3.5-20170223000042+0000"]
+        runner.args = ['-i']
 
         when:
         def result = runner.run()
