@@ -19,7 +19,6 @@ import com.google.common.base.Joiner;
 import org.gradle.api.Action;
 import org.gradle.api.UncheckedIOException;
 import org.gradle.internal.Factory;
-import org.gradle.internal.io.NullOutputStream;
 import org.gradle.process.ExecResult;
 import org.gradle.process.internal.AbstractExecHandleBuilder;
 import org.gradle.process.internal.ExecHandle;
@@ -47,8 +46,8 @@ class ForkingGradleHandle extends OutputScrapingGradleHandle {
         this.isDaemon = isDaemon;
         this.stdinPipe = stdinPipe;
         this.durationMeasurement = durationMeasurement;
-        this.standardOutputCapturer = new OutputCapturer(durationMeasurement == null ? System.out : NullOutputStream.INSTANCE, outputEncoding);
-        this.errorOutputCapturer = new OutputCapturer(durationMeasurement == null ? System.err : NullOutputStream.INSTANCE, outputEncoding);
+        this.standardOutputCapturer = new OutputCapturer(System.out, outputEncoding);
+        this.errorOutputCapturer = new OutputCapturer(System.err, outputEncoding);
     }
 
     @Override
